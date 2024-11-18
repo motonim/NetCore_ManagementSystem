@@ -6,7 +6,7 @@ namespace LeaveManagementSystem.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
+        protected override void Up(MigrationBuilder migrationBuilder) // what needs to happen to the database, what changes need to be carried out
         {
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
@@ -193,7 +193,7 @@ namespace LeaveManagementSystem.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
+        protected override void Down(MigrationBuilder migrationBuilder) // it has opposite commands to the up
         {
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext // meaning ApplicationDbContext is an inheritance from IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+        public DbSet<LeaveType> LeaveTypes { get; set; }
     }
 }
