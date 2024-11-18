@@ -36,8 +36,10 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var leaveType = await _context.LeaveTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            // Select * from LeaveTypes WHERE Id = @id
+            var leaveType = await _context.LeaveTypes // connects to the database(context) and go to the LeaveTypes table
+                .FirstOrDefaultAsync(m => m.Id == id); // Lambda Expression
+                                                       // Parameterization - securely pass over ID. a key for preventing SQL injection attacks
             if (leaveType == null)
             {
                 return NotFound();
@@ -65,7 +67,7 @@ namespace LeaveManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(leaveType);
+            return View(leaveType); // going back to create page but this time, let's send the data(leaveType) typed in as well
         }
 
         // GET: LeaveTypes/Edit/5
@@ -76,6 +78,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
+            // Select * from LeaveTypes WHERE Id = @id
             var leaveType = await _context.LeaveTypes.FindAsync(id);
             if (leaveType == null)
             {
