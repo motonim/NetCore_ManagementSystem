@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Services;
 
-public class LeaveTypesServices(ApplicationDbContext context, IMapper mapper) : ILeaveTypesServices
+public class LeaveTypesService(ApplicationDbContext context, IMapper mapper) : ILeaveTypesService
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;

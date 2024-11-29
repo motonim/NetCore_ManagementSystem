@@ -12,17 +12,17 @@ using LeaveManagementSystem.Services;
 
 namespace LeaveManagementSystem.Controllers
 {
-    public class LeaveTypesController(ILeaveTypesServices leaveTypesService) : Controller
+    public class LeaveTypesController(ILeaveTypesService leaveTypesService) : Controller
     {
         private const string NameExistsValidationMessage = "This leave type already exists in the database";
-        private readonly ILeaveTypesServices _leaveTypesService = LeaveTypesServices;
+        private readonly ILeaveTypesService _leaveTypesService = leaveTypesService;
 
-        public LeaveTypesController(ApplicationDbContext context, IMapper mapper) // it's a part of the pattern called dependency injection.
-                                                                  // 'context' here represents a connection to the database
-        {
-            _context = context;
-            this._mapper = mapper;
-        }
+        //public LeaveTypesController(ApplicationDbContext context, IMapper mapper) // it's a part of the pattern called dependency injection.
+        //                                                          // 'context' here represents a connection to the database
+        //{
+        //    _context = context;
+        //    this._mapper = mapper;
+        //}
 
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
@@ -55,7 +55,7 @@ namespace LeaveManagementSystem.Controllers
             //    .FirstOrDefaultAsync(m => m.Id == id); // Lambda Expression
             //                                           // Parameterization - securely pass over ID. a key for preventing SQL injection attacks
 
-            var leaveType = await _leaveTypesService.Get<LeaveTypeReadOnlyVM>(id.Value);
+            var leaveType = await _leaveTypesService.GetAsync<LeaveTypeReadOnlyVM>(id.Value);
 
             if (leaveType == null)
             {
@@ -94,7 +94,7 @@ namespace LeaveManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                await _leaveTypesService.Create(leaveTypeCreate);
+                await _leaveTypesService.CreateAsync(leaveTypeCreate);
                 return RedirectToAction(nameof(Index));
             }
             return View(leaveTypeCreate); // going back to create page but this time, let's send the data(leaveType) typed in as well
@@ -109,7 +109,7 @@ namespace LeaveManagementSystem.Controllers
             }
 
             // Select * from LeaveTypes WHERE Id = @id
-            var leaveType = await _leavetypeService.Get<LeaveTypeEditVM>(id.Value);
+            var leaveType = await _leaveTypesService.GetAsync<LeaveTypeEditVM>(id.Value);
 
             if (leaveType == null)
             {
@@ -135,7 +135,7 @@ namespace LeaveManagementSystem.Controllers
             }
 
             // Adding custom validation and model state error
-            if (await _leaveTypeService.CheckIfLeaveTypeNameExistsForEdit(leaveTypeEdit))
+            if (await _leaveTypesService.CheckIfLeaveTypeNameExistsForEdit(leaveTypeEdit))
             {
                 ModelState.AddModelError(nameof(leaveTypeEdit.Name), NameExistsValidationMessage);
             }
@@ -146,7 +146,7 @@ namespace LeaveManagementSystem.Controllers
                 {
                     //var leaveType = _mapper.Map<LeaveType>(leaveTypeEdit);
                     //_context.Update(leaveType);
-                    await _leaveTypesService.Edit(leaveTypeEdit);
+                    await _leaveTypesService.EditAsync(leaveTypeEdit);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -172,7 +172,7 @@ namespace LeaveManagementSystem.Controllers
                 return NotFound();
             }
 
-            var leaveType = await _leaveTypesService.Get<LeaveTypeReadOnlyVM>(id.Value);
+            var leaveType = await _leaveTypesService.GetAsync<LeaveTypeReadOnlyVM>(id.Value);
             if (leaveType == null)
             {
                 return NotFound();
@@ -195,7 +195,7 @@ namespace LeaveManagementSystem.Controllers
         //    }
 
         //    await _context.SaveChangesAsync();
-            await _leaveTypeService.Remove(id);
+            await _leaveTypesService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
