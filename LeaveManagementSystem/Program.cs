@@ -1,4 +1,5 @@
 using LeaveManagementSystem.Data;
+using LeaveManagementSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// the service is registered in the IOC(Inversion of Control) container and it's usable by other classes
+builder.Services.AddScoped<ILeaveTypesServices, LeaveTypesServices>(); //ILeaveTypesServices is the contract and LeaveTypesSerivces is the implementation
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
 
