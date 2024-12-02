@@ -38,7 +38,7 @@ namespace LeaveManagementSystem.Controllers
 
             //// return the view model to the view
 
-            var viewData = _leaveTypesService.GetAllAsync();
+            var viewData = await _leaveTypesService.GetAllAsync();
             return View(viewData);
         }
 
