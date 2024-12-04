@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Services;
 
-public class LeaveTypesService(ApplicationDbContext context, IMapper mapper) : ILeaveTypesService
+public class LeaveTypesService(ApplicationDbContext _context, IMapper _mapper) : ILeaveTypesService
 {
-    private readonly ApplicationDbContext _context = context;
-    private readonly IMapper _mapper = mapper;
+    //private readonly ApplicationDbContext _context = context;
+    //private readonly IMapper _mapper = mapper;
 
     public async Task<List<LeaveTypeReadOnlyVM>> GetAllAsync()
     {

@@ -12,10 +12,10 @@ using LeaveManagementSystem.Services;
 
 namespace LeaveManagementSystem.Controllers
 {
-    public class LeaveTypesController(ILeaveTypesService leaveTypesService) : Controller
+    public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Controller
     {
         private const string NameExistsValidationMessage = "This leave type already exists in the database";
-        private readonly ILeaveTypesService _leaveTypesService = leaveTypesService;
+        //private readonly ILeaveTypesService _leaveTypesService = leaveTypesService;
 
         //public LeaveTypesController(ApplicationDbContext context, IMapper mapper) // it's a part of the pattern called dependency injection.
         //                                                          // 'context' here represents a connection to the database
