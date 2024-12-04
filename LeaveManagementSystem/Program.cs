@@ -17,7 +17,8 @@ builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>(); //ILeaveTyp
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
