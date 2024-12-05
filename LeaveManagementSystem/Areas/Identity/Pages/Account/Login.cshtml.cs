@@ -130,6 +130,11 @@ namespace LeaveManagementSystem.Areas.Identity.Pages.Account
                 }
                 else
                 {
+                    Console.WriteLine(result);
+                    Console.WriteLine(Input.Email);
+                    Console.WriteLine(Input.Password);
+                    Console.WriteLine(Input.RememberMe);
+                    _logger.LogInformation("Attempting login for user: {Email}", Input.Email);
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }

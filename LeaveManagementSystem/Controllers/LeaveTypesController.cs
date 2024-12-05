@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Data;
-using LeaveManagementSystem.Models.LeaveTypes;
-using AutoMapper;
+﻿using LeaveManagementSystem.Models.LeaveTypes;
 using LeaveManagementSystem.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
     public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Controller
     {
         private const string NameExistsValidationMessage = "This leave type already exists in the database";
@@ -188,13 +181,13 @@ namespace LeaveManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-        //    var leaveType = await _context.LeaveTypes.FindAsync(id);
-        //    if (leaveType != null)
-        //    {
-        //        _context.LeaveTypes.Remove(leaveType);
-        //    }
+            //    var leaveType = await _context.LeaveTypes.FindAsync(id);
+            //    if (leaveType != null)
+            //    {
+            //        _context.LeaveTypes.Remove(leaveType);
+            //    }
 
-        //    await _context.SaveChangesAsync();
+            //    await _context.SaveChangesAsync();
             await _leaveTypesService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
