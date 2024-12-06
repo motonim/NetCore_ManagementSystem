@@ -3,7 +3,7 @@ using LeaveManagementSystem.Data;
 using LeaveManagementSystem.Models.LeaveTypes;
 using Microsoft.EntityFrameworkCore;
 
-namespace LeaveManagementSystem.Services;
+namespace LeaveManagementSystem.Services.LeaveTypes;
 
 public class LeaveTypesService(ApplicationDbContext _context, IMapper _mapper) : ILeaveTypesService
 {

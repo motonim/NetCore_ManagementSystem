@@ -1,5 +1,6 @@
 using LeaveManagementSystem.Data;
-using LeaveManagementSystem.Services;
+using LeaveManagementSystem.Services.LeaveAllocations;
+using LeaveManagementSystem.Services.LeaveTypes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -15,6 +16,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // the service is registered in the IOC(Inversion of Control) container and it's usable by other classes
 builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>(); //ILeaveTypesServices is the contract and LeaveTypesSerivces is the implementation
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ILeaveAllocationsService, LeaveAllocationsService>();
 
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
