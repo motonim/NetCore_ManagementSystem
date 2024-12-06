@@ -18,6 +18,7 @@ builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>(); //ILeaveTyp
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ILeaveAllocationsService, LeaveAllocationsService>();
 
+builder.Services.AddHttpContextAccessor();
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
 
