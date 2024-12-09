@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagementSystem.Models.LeaveAllocations;
 using LeaveManagementSystem.Models.Period;
-using LeaveManagementSystem.Models.LeaveTypes;
 
 namespace LeaveManagementSystem.MappingProfiles
 {
@@ -10,6 +9,8 @@ namespace LeaveManagementSystem.MappingProfiles
         public LeaveAllocationAutoMapperProfile()
         {
             CreateMap<LeaveAllocation, LeaveAllocationVM>();
+            CreateMap<LeaveAllocation, LeaveAllocationEditVM>();
+            CreateMap<ApplicationUser, EmployeeListVM>();
             CreateMap<Period, PeriodVM>();
         }
     }

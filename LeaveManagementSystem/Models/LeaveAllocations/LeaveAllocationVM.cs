@@ -15,4 +15,5 @@ namespace LeaveManagementSystem.Models.LeaveAllocations
 
         public LeaveTypeReadOnlyVM? LeaveType { get; set; } = new LeaveTypeReadOnlyVM();  // to avoid null exception, we instantiate the class
     }
+
 }
