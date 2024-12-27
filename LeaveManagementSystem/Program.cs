@@ -1,5 +1,6 @@
 using LeaveManagementSystem.Data;
 using LeaveManagementSystem.Services.LeaveAllocations;
+using LeaveManagementSystem.Services.LeaveRequests;
 using LeaveManagementSystem.Services.LeaveTypes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>(); //ILeaveTypesServices is the contract and LeaveTypesSerivces is the implementation
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ILeaveAllocationsService, LeaveAllocationsService>();
+builder.Services.AddScoped<ILeaveRequestsService, LeaveRequestsService>();
 
 builder.Services.AddHttpContextAccessor();
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
