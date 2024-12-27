@@ -1,7 +1,10 @@
 ﻿namespace LeaveManagementSystem.Controllers;
+using LeaveManagementSystem.Models.LeaveRequests;
+using LeaveManagementSystem.Services.LeaveTypes;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 [Authorize]
-public class LeaveRequestsController : Controller
+public class LeaveRequestsController(ILeaveTypesService _leaveTypesService) : Controller
 {
     // Employee View requests
     public async Task<IActionResult> Index()
@@ -12,12 +15,20 @@ public class LeaveRequestsController : Controller
     // Employee create requests
     public async Task<IActionResult> Create()
     {
-        return View();
+        var leaveTypes = await _leaveTypesService.GetAllAsync();
+        var leaveTypesList = new SelectList(leaveTypes, "Id", "Name");
+        var model = new LeaveRequestCreateVM
+        {
+            StartDate = DateOnly.FromDateTime(DateTime.Now),
+            EndDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
+            LeaveTypes = leaveTypesList
+        };
+        return View(model);
     }
 
     // Employee create requests
     [HttpPost]
-    public async Task<IActionResult> Create(int leaverequestId /*Use VM*/)
+    public async Task<IActionResult> Create(LeaveRequestCreateVM model)
     {
         return View();
     }

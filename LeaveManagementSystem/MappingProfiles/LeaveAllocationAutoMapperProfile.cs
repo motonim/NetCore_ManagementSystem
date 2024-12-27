@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LeaveManagementSystem.Models.LeaveAllocations;
-using LeaveManagementSystem.Models.Period;
+using LeaveManagementSystem.Models.Periods;
 
 namespace LeaveManagementSystem.MappingProfiles
 {

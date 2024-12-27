@@ -62,10 +62,10 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <div class="row">
-                    <div class="col">Leave Name</div>
-                    <div class="col">Original Allocation</div>
-                    <div class="col">Current Allocation</div>
-                    <div class="col">Action</div>
+                    <div class="col"><strong>Leave Name</strong></div>
+                    <div class="col"><strong>Original Allocation</strong></div>
+                    <div class="col"><strong>Current Allocation</strong></div>
+                    <div class="col"><strong>Action</strong></div>
                 </div>
             </li>
             @foreach (var allocation in Model.LeaveAllocations)
@@ -84,7 +84,7 @@
                             {
                                 <a class="btn btn-warning" asp-action="EditAllocation" asp-route-id="@allocation.Id">Edit Allocation</a>
                             }
-                            <a asp-controller="LeaveRequest" asp-action="Create" class="btn btn-success">Request Leave</a>
+                            <a asp-controller="LeaveRequests" asp-action="Create" class="btn btn-success">Request Leave</a>
                         </div>
                     </div>
                 </li>
