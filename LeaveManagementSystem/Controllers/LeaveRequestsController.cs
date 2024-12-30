@@ -1,10 +1,11 @@
 ﻿namespace LeaveManagementSystem.Controllers;
 using LeaveManagementSystem.Models.LeaveRequests;
+using LeaveManagementSystem.Services.LeaveRequests;
 using LeaveManagementSystem.Services.LeaveTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 [Authorize]
-public class LeaveRequestsController(ILeaveTypesService _leaveTypesService) : Controller
+public class LeaveRequestsController(ILeaveTypesService _leaveTypesService, ILeaveRequestsService _leaveRequestsService) : Controller
 {
     // Employee View requests
     public async Task<IActionResult> Index()
@@ -28,13 +29,22 @@ public class LeaveRequestsController(ILeaveTypesService _leaveTypesService) : Co
 
     // Employee create requests
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(LeaveRequestCreateVM model)
     {
-        return View();
+        if (ModelState.IsValid)
+        {
+            await _leaveRequestsService.CreateLeaveRequest(model);
+        }
+
+        var leaveTypes = await _leaveTypesService.GetAllAsync();
+        model.LeaveTypes = new SelectList(leaveTypes, "Id", "Name");
+        return View(model);
     }
 
     // Employee cancel requests
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(int leaverequestId /*Use VM*/)
     {
         return View();
@@ -47,6 +57,7 @@ public class LeaveRequestsController(ILeaveTypesService _leaveTypesService) : Co
     }
 
     // Employee cancel requests
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Review(int leaverequestId)
     {
         return View();
