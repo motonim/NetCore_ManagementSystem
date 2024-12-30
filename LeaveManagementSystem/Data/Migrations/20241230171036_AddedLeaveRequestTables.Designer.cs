@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagementSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241212164906_AddedLeaveRequestTables")]
+    [Migration("20241230171036_AddedLeaveRequestTables")]
     partial class AddedLeaveRequestTables
     {
         /// <inheritdoc />
@@ -105,7 +105,7 @@ namespace LeaveManagementSystem.Data.Migrations
                         {
                             Id = "680a1fe0-9f6b-4bb8-acf3-a720ca5a35d8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "efdbed6b-a420-401c-996f-f988d08d6629",
+                            ConcurrencyStamp = "d93a28cf-4e5e-4fbf-b044-c4953b0523ed",
                             DateOfBirth = new DateOnly(1955, 12, 15),
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
@@ -114,9 +114,9 @@ namespace LeaveManagementSystem.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECDheCiwyojXZDNQqYtrO+hgZZnl5G9U1YHi22/xNDC8RdLVmUF6LmQDm8emaP+bAg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGHaDdQpBRMCsIlv9mCawBWZ2lDcw0OSmz4jjYB9bwMxviz5EfGKJrRCSdoD6ENSfw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8b33d565-1458-4042-b2c6-c78ec4552910",
+                            SecurityStamp = "8fc09207-3c02-4ac6-8250-df08ef2d6c7c",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });

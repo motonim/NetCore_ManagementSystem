@@ -32,9 +32,17 @@ public class LeaveRequestsController(ILeaveTypesService _leaveTypesService, ILea
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(LeaveRequestCreateVM model)
     {
+        // Validate that the days don't exceed the allocation
+        if (await _leaveRequestsService.RequestDatesExceedAllocation(model))
+        {
+            ModelState.AddModelError(string.Empty, "You have exceeded your allocation");
+            ModelState.AddModelError(nameof(model.EndDate), "The number of days requested is invalid.");
+        }
+
         if (ModelState.IsValid)
         {
             await _leaveRequestsService.CreateLeaveRequest(model);
+            return RedirectToAction(nameof(Index));
         }
 
         var leaveTypes = await _leaveTypesService.GetAllAsync();

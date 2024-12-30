@@ -73,7 +73,7 @@ namespace LeaveManagementSystem.Data.Migrations
                 keyColumn: "Id",
                 keyValue: "680a1fe0-9f6b-4bb8-acf3-a720ca5a35d8",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "efdbed6b-a420-401c-996f-f988d08d6629", "AQAAAAIAAYagAAAAECDheCiwyojXZDNQqYtrO+hgZZnl5G9U1YHi22/xNDC8RdLVmUF6LmQDm8emaP+bAg==", "8b33d565-1458-4042-b2c6-c78ec4552910" });
+                values: new object[] { "d93a28cf-4e5e-4fbf-b044-c4953b0523ed", "AQAAAAIAAYagAAAAEGHaDdQpBRMCsIlv9mCawBWZ2lDcw0OSmz4jjYB9bwMxviz5EfGKJrRCSdoD6ENSfw==", "8fc09207-3c02-4ac6-8250-df08ef2d6c7c" });
 
             migrationBuilder.InsertData(
                 table: "LeaveRequestStatuses",
