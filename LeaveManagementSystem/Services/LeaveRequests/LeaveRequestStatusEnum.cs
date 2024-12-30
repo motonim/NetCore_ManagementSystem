@@ -1,6 +1,6 @@
 ﻿namespace LeaveManagementSystem.Services.LeaveRequests
 {
-    public enum LeaveRequestStatus
+    public enum LeaveRequestStatusEnum
     {
         Pending = 1,
         Approved = 2,
