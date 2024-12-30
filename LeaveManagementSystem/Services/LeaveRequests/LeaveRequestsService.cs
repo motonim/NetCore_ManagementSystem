@@ -6,9 +6,19 @@ namespace LeaveManagementSystem.Services.LeaveRequests
 {
     public class LeaveRequestsService(IMapper _mapper, UserManager<ApplicationUser> _userManager, IHttpContextAccessor _httpContextAccessor, ApplicationDbContext _context) : ILeaveRequestsService
     {
-        public Task CancelLeaveRequest(int leaveRequestId)
+        public async Task CancelLeaveRequest(int leaveRequestId)
         {
-            throw new NotImplementedException();
+            var leaveRequest = await _context.LeaveRequests.FindAsync(leaveRequestId);
+            leaveRequest.LeaveRequestStatusId = (int)LeaveRequestStatusEnum.Canceled;
+
+            // restore allocation days based on request
+            var numberOfDays = leaveRequest.EndDate.DayNumber - leaveRequest.StartDate.DayNumber;
+            var allocation = await _context.LeaveAllocations
+                .FirstAsync(q => q.EmployeeId == leaveRequest.EmployeeId && q.LeaveTypeId == leaveRequest.LeaveTypeId);
+            allocation.Days += numberOfDays;
+
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task CreateLeaveRequest(LeaveRequestCreateVM model)
