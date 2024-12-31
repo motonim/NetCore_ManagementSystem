@@ -1,11 +1,13 @@
 ﻿
 using AutoMapper;
 using LeaveManagementSystem.Models.LeaveAllocations;
+using LeaveManagementSystem.Services.Periods;
+using LeaveManagementSystem.Services.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Services.LeaveAllocations
 {
-    public class LeaveAllocationsService(ApplicationDbContext _context, IHttpContextAccessor _httpContextAccessor, UserManager<ApplicationUser> _userManager, IMapper _mapper) : ILeaveAllocationsService
+    public class LeaveAllocationsService(ApplicationDbContext _context, IUserService _userService, IMapper _mapper, IPeriodsService _periodsService) : ILeaveAllocationsService
     {
         public async Task AllocateLeave(string employeeId)
         {
@@ -15,14 +17,16 @@ namespace LeaveManagementSystem.Services.LeaveAllocations
                 .ToListAsync();
 
             // get the current period based on the year
-            var currentDate = DateTime.Now;
-            // following the date of the tutorial to compare the codes
-            var year = currentDate.Year;
-            var randomDay = new Random().Next(1, 32);
-            var randomDateInMay = new DateTime(year, 5, randomDay);
+            //var currentDate = DateTime.Now;
+            //// following the date of the tutorial to compare the codes
+            //var year = currentDate.Year;
+            //var randomDay = new Random().Next(1, 32);
+            //var randomDateInMay = new DateTime(year, 5, randomDay);
 
-            var period = await _context.Periods.SingleAsync(q => q.EndDate.Year == randomDateInMay.Year);
-            var monthsRemaining = period.EndDate.Month - randomDateInMay.Month;
+            // Get the current period based on the year
+            //var period = await _context.Periods.SingleAsync(q => q.EndDate.Year == currentDate.Year);
+            var period = await _periodsService.GetCurrentPeriod();
+            var monthsRemaining = period.EndDate.Month - DateTime.Now.Month;
 
             // foreach leave type, create an allocation entry
             foreach (var leaveType in leaveTypes)
@@ -53,8 +57,8 @@ namespace LeaveManagementSystem.Services.LeaveAllocations
         public async Task<EmployeeAllocationVM> GetEmployeeAllocations(string? userId)
         {
             var user = string.IsNullOrEmpty(userId) 
-                ? await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User) 
-                : await _userManager.FindByIdAsync(userId);
+                ? await _userService.GetLoggedInUser() 
+                : await _userService.GetUserById(userId);
 
             var allocations = await GetAllocations(user.Id);
             var allocationVmList = _mapper.Map<List<LeaveAllocation>, List<LeaveAllocationVM>>(allocations); // convert employee allocation list from the domain objects into the view model objects.
@@ -77,7 +81,7 @@ namespace LeaveManagementSystem.Services.LeaveAllocations
 
         public async Task<List<EmployeeListVM>> GetEmployees()
         {
-            var users = await _userManager.GetUsersInRoleAsync(Roles.Employee);
+            var users = await _userService.GetEmployees();
             var employees = _mapper.Map<List<ApplicationUser>, List<EmployeeListVM>> (users.ToList());
 
             return employees;
@@ -107,6 +111,16 @@ namespace LeaveManagementSystem.Services.LeaveAllocations
                 .ExecuteUpdateAsync(s => s.SetProperty(e => e.Days, allocationEditVm.Days));
         }
 
+        public async Task<LeaveAllocation> GetCurrentAllocation(int leaveTypeId, string employeeId)
+        {
+            var period = await _periodsService.GetCurrentPeriod();
+            var allocation = await _context.LeaveAllocations
+                    .FirstAsync(q => q.LeaveTypeId == leaveTypeId
+                    && q.EmployeeId == employeeId
+                    && q.PeriodId == period.Id);
+            return allocation;
+        }
+
         private async Task<List<LeaveAllocation>> GetAllocations(string? userId)
         {
             //string employeeId = string.Empty;
@@ -119,17 +133,19 @@ namespace LeaveManagementSystem.Services.LeaveAllocations
             //    var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User); // allows me to peek into the HTTP context associated with the request that is called in this method
             //    employeeId = user.Id;
             //}
-            var currentDate = DateTime.Now;
-            // following the date of the tutorial to compare the codes
-            var year = currentDate.Year;
-            var randomDay = new Random().Next(1, 32);
-            var randomDateInMay = new DateTime(year, 5, randomDay);
+            //var currentDate = DateTime.Now;
+            //// following the date of the tutorial to compare the codes
+            //var year = currentDate.Year;
+            //var randomDay = new Random().Next(1, 32);
+            //var randomDateInMay = new DateTime(year, 5, randomDay);
+
+            var period = await _periodsService.GetCurrentPeriod();
 
             var leaveAllocations = await _context.LeaveAllocations
                 .Include(q => q.LeaveType) // Inner join statement
                                            //.Include(q => q.Employee)
                 .Include(q => q.Period)
-                .Where(q => q.EmployeeId == userId && q.Period.EndDate.Year == randomDateInMay.Year)
+                .Where(q => q.EmployeeId == userId && q.Period.Id == period.Id)
                 .ToListAsync();
 
             return leaveAllocations;
