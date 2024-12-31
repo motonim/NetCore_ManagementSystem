@@ -63,7 +63,8 @@ public class LeaveRequestsController(ILeaveTypesService _leaveTypesService, ILea
     // Admin/Supervisor review requests
     public async Task<IActionResult> ListRequests()
     {
-        return View();
+        var model = await _leaveRequestsService.AdminGetAllLeaveRequests();
+        return View(model);
     }
 
     // Employee cancel requests
