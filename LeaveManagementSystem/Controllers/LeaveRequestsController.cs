@@ -67,17 +67,17 @@ public class LeaveRequestsController(ILeaveTypesService _leaveTypesService, ILea
         return View(model);
     }
 
-    // Employee cancel requests
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Review(int leaverequestId)
+    public async Task<IActionResult> Review(int id)
     {
-        return View();
+        var model = await _leaveRequestsService.GetLeaveRequestForReview(id);
+        return View(model);
     }
 
-    // Employee cancel requests
     [HttpPost]
-    public async Task<IActionResult> Review(/*Use VM*/)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Review(int id, bool approved)
     {
-        return View();
+        await _leaveRequestsService.ReviewLeaveRequest(id, approved);
+        return RedirectToAction(nameof(ListRequests));
     }
 }

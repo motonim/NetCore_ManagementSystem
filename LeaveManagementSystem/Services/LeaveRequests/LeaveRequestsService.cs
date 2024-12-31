@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using LeaveManagementSystem.Data;
+using LeaveManagementSystem.Models.LeaveAllocations;
 using LeaveManagementSystem.Models.LeaveRequests;
 using Microsoft.EntityFrameworkCore;
 
@@ -107,9 +110,57 @@ namespace LeaveManagementSystem.Services.LeaveRequests
 
         }
 
-        public Task ReviewLeaveRequest(ReviewLeaveRequestVM model)
+        public async Task ReviewLeaveRequest(int leaveRequestId, bool approved)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
+            var test = leaveRequestId;
+            var leaveRequest = await _context.LeaveRequests.FindAsync(leaveRequestId);
+
+            leaveRequest.LeaveRequestStatusId = approved
+                ? (int)LeaveRequestStatusEnum.Approved
+                : (int)LeaveRequestStatusEnum.Declined;
+
+            leaveRequest.ReviewerId = user.Id;
+
+            if(!approved)
+            {
+                var allocation = await _context.LeaveAllocations
+                   .FirstAsync(q => q.EmployeeId == leaveRequest.EmployeeId && q.LeaveTypeId == leaveRequest.LeaveTypeId);
+                var numberOfDays = leaveRequest.EndDate.DayNumber - leaveRequest.StartDate.DayNumber;
+                allocation.Days += numberOfDays;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id)
+        {
+            var leaveRequest = await _context.LeaveRequests
+                .Include(q => q.LeaveType)
+                .FirstAsync(q => q.Id == id);
+
+            var user = await _userManager.FindByIdAsync(leaveRequest.EmployeeId);
+
+            var model = new ReviewLeaveRequestVM
+            {
+                StartDate = leaveRequest.StartDate,
+                EndDate = leaveRequest.EndDate,
+                NumberOfDays = leaveRequest.EndDate.DayNumber - leaveRequest.StartDate.DayNumber,
+                LeaveRequestStatus = (LeaveRequestStatusEnum)leaveRequest.LeaveRequestStatusId,
+                Id = leaveRequest.Id,
+                LeaveType = leaveRequest.LeaveType.Name,
+                RequestComments = leaveRequest.RequestComments,
+                Employee = new EmployeeListVM
+                {
+                    Id = leaveRequest.EmployeeId,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                }
+            };
+
+            return model;
+            
         }
     }
 }
