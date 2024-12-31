@@ -24,6 +24,14 @@ builder.Services.AddScoped<ILeaveRequestsService, LeaveRequestsService>();
 builder.Services.AddScoped<IPeriodsService, PeriodsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminSupervisorOnly", policy =>
+    {
+        policy.RequireRole(Roles.Administrator, Roles.Supervisor);
+    });
+});
+
 builder.Services.AddHttpContextAccessor();
 // it will check the entire assembly(folder structure) that looks like an automapper profile and automatically register
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
